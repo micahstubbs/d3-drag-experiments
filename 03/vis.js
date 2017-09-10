@@ -23,10 +23,24 @@ const context = canvas.node().getContext('2d');
 const width = canvas.property('width');
 const height = canvas.property('height');
 
-const circles = [{ x: 50, y: 50, radius: 10 }, { x: 100, y: 70, radius: 10 }];
+const circles = [{ x: 50, y: 60, radius: 10 }, { x: 100, y: 80, radius: 10 }];
+
+render();
+
+canvas.call(
+  d3
+    .drag()
+    .subject(dragSubject)
+    .on('start', dragStarted)
+    .on('drag', dragged)
+    .on('end', dragEnded)
+    .on('start.render drag.render end.render', render)
+);
 
 function render() {
+  context.clearRect(0, 0, width, height);
   // draw the black rectangle
+  context.fillStyle = 'black';
   context.clearRect(0, 0, width, height);
   context.fillRect(10, 10, 210, 210);
 
@@ -40,7 +54,44 @@ function render() {
   });
 }
 
-render();
+function dragSubject() {
+  let i;
+  const n = circles.length;
+  let dx;
+  let dy;
+  let d2;
+  const radius = 10;
+  let s2 = radius * radius * 4; // Double the radius
+  let circle;
+  let subject;
+
+  for (i = 0; i < n; i += 1) {
+    circle = circles[i];
+    dx = d3.event.x - circle.x;
+    dy = d3.event.y - circle.y;
+    d2 = dx * dx + dy * dy;
+    if (d2 < s2) {
+      subject = circle;
+      s2 = d2;
+    }
+    return subject;
+  }
+}
+
+function dragStarted() {
+  circles.splice(circles.indexOf(d3.event.subject), 1);
+  circles.push(d3.event.subject);
+  d3.event.subject.active = true;
+}
+
+function dragged() {
+  d3.event.subject.x = d3.event.x;
+  d3.event.subject.y = d3.event.y;
+}
+
+function dragEnded() {
+  d3.event.subject.active = false;
+}
 
 // const group = container.append('g');
 
