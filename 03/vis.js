@@ -24,6 +24,7 @@ const width = canvas.property('width');
 const height = canvas.property('height');
 
 const circles = [{ x: 50, y: 60, radius: 10 }, { x: 100, y: 80, radius: 10 }];
+const rects = [{ x: 10, y: 10, x2: 210, y2: 210 }];
 
 render();
 
@@ -40,9 +41,11 @@ canvas.call(
 function render() {
   context.clearRect(0, 0, width, height);
   // draw the black rectangle
-  context.fillStyle = 'black';
-  context.clearRect(0, 0, width, height);
-  context.fillRect(10, 10, 210, 210);
+  rects.forEach(rect => {
+    context.fillStyle = 'black';
+    context.clearRect(0, 0, width, height);
+    context.fillRect(rect.x, rect.y, rect.x2, rect.y2);
+  });
 
   // draw the red circles
   circles.forEach(circle => {
@@ -73,6 +76,9 @@ function dragSubject() {
     if (d2 < s2) {
       subject = circle;
       s2 = d2;
+    } else {
+      rect = rects[0];
+      subject = rect;
     }
     return subject;
   }
