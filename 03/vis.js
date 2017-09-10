@@ -45,15 +45,21 @@ function render() {
     context.fillStyle = 'black';
     context.clearRect(0, 0, width, height);
     context.fillRect(rect.x, rect.y, rect.x2, rect.y2);
-  });
 
-  // draw the red circles
-  circles.forEach(circle => {
-    context.beginPath();
-    context.moveTo(circle.x + circle.radius, circle.y);
-    context.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
-    context.fillStyle = 'red';
-    context.fill();
+    // draw the red circles
+    circles.forEach(circle => {
+      context.beginPath();
+      context.moveTo(circle.x + rect.x + circle.radius, circle.y + rect.y);
+      context.arc(
+        circle.x + rect.x,
+        circle.y + rect.y,
+        circle.radius,
+        0,
+        2 * Math.PI
+      );
+      context.fillStyle = 'red';
+      context.fill();
+    });
   });
 }
 
@@ -70,8 +76,8 @@ function dragSubject() {
 
   for (i = 0; i < n; i += 1) {
     circle = circles[i];
-    dx = d3.event.x - circle.x;
-    dy = d3.event.y - circle.y;
+    dx = d3.event.x - circle.x - rects[0].x;
+    dy = d3.event.y - circle.y - rects[0].y;
     d2 = dx * dx + dy * dy;
     if (d2 < s2) {
       subject = circle;
