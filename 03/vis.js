@@ -76,23 +76,30 @@ function dragSubject() {
 
   for (i = 0; i < n; i += 1) {
     circle = circles[i];
+    console.log('circle from dragSubject', circle);
     dx = d3.event.x - circle.x - rects[0].x;
     dy = d3.event.y - circle.y - rects[0].y;
     d2 = dx * dx + dy * dy;
+
+    console.log('dx', dx);
+    console.log('dy', dy);
+    console.log('d2', d2);
+    console.log('s2', s2);
+
     if (d2 < s2) {
       subject = circle;
       s2 = d2;
-    } else {
+    } else if (typeof subject === 'undefined') {
       rect = rects[0];
       subject = rect;
     }
-    return subject;
   }
+  return subject;
 }
 
 function dragStarted() {
-  circles.splice(circles.indexOf(d3.event.subject), 1);
-  circles.push(d3.event.subject);
+  // circles.splice(circles.indexOf(d3.event.subject), 1);
+  // circles.push(d3.event.subject);
   d3.event.subject.active = true;
 }
 
