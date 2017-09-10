@@ -1,8 +1,4 @@
-port to d3v4
-
----
-
-es2015 with lebab
+convert to canvas
 
 ---
 
