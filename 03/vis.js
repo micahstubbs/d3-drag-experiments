@@ -17,9 +17,9 @@ const drag = d3
 
 const container = d3
   .select('body')
-  .append('svg')
-  .attr('width', 1200)
-  .attr('height', 600);
+  .append('canvas')
+  .attr('width', 960)
+  .attr('height', 500);
 
 const group = container.append('g');
 
