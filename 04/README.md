@@ -3,6 +3,8 @@ a [Canvas](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API) example 
 you could also think about this problem as "how to create a hierarchy of draggable shapes?". the short answer is: do it in the `dragSubject()` function
 [d3-drag docs on drag subjects](https://github.com/d3/d3-drag#drag_subject)
 
+a fork of [Multiple Shape Drag Canvas](http://bl.ocks.org/micahstubbs/5135994b936e7294911fa28520f015c1)
+
 inspiration from blocks [graph neighbors on mouseover](http://bl.ocks.org/micahstubbs/e5d0c64e487a8920e6b775f1244f8486) and [Force-Directed Graph](https://bl.ocks.org/mbostock/f584aa36df54c451c94a9d0798caed35/0efb1fa7cfef4f4d6955c6283656a850b8a3aa7b)
 
 an iteration on this very helpful [stackoverflow answer](https://stackoverflow.com/questions/33018246/drag-multiple-items-inside-another-item-in-d3)
