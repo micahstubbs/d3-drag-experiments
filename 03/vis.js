@@ -1,17 +1,3 @@
-const drag = d3
-  .drag()
-  .on('start', () => {
-    d3.event.sourceEvent.stopPropagation();
-  })
-  .on('drag', function() {
-    const x = d3.event.x;
-    const y = d3.event.y;
-    if (this.tagName == 'circle') {
-      if (x <= w - 10 && x >= 10 && y <= h - 10 && y >= 10)
-        d3.select(this).attr('cx', x).attr('cy', y);
-    } else d3.select(this).attr('transform', `translate(${x},${y})`);
-  });
-
 /* prettier-ignore */
 d3.select('body')
   .append('canvas')

@@ -1,20 +1,3 @@
-const drag = d3
-  .drag()
-  .on('start', () => {
-    d3.event.sourceEvent.stopPropagation();
-  })
-  .on('drag', function() {
-    const x = d3.event.x;
-    const y = d3.event.y;
-    if (this.tagName == 'circle') {
-      if (x <= w - 10 && x >= 10 && y <= h - 10 && y >= 10)
-        d3
-          .select(this)
-          .attr('cx', x)
-          .attr('cy', y);
-    } else d3.select(this).attr('transform', `translate(${x},${y})`);
-  });
-
 /* prettier-ignore */
 d3.select('body')
   .append('canvas')
@@ -26,8 +9,9 @@ const context = canvas.node().getContext('2d');
 const width = canvas.property('width');
 const height = canvas.property('height');
 
-const circles = [{ x: 50, y: 60, radius: 10 }, { x: 100, y: 80, radius: 10 }];
-const rects = [{ x: 10, y: 10, x2: 210, y2: 210 }];
+// make a rect for the background
+// d3.drag updates these values behind the scenes
+const rects = [{ x: 0, y: 0, x2: 0, y2: 0 }];
 const radius = 10;
 
 //
@@ -143,8 +127,9 @@ function dragSubject() {
       subject = node;
       s2 = d2;
     } else if (typeof subject === 'undefined') {
-      rect = rects[0];
-      subject = rect;
+      background = rects[0];
+      subject = background;
+      console.log('background', background);
     }
   }
   return subject;
