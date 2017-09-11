@@ -88,6 +88,7 @@ function render() {
     context.clearRect(0, 0, width, height);
     context.fillRect(rect.x, rect.y, rect.x2, rect.y2);
 
+    // draw a line for each link
     context.strokeStyle = '#aaa';
     context.lineWidth = 1;
     context.beginPath();
@@ -116,20 +117,19 @@ function render() {
 
 function dragSubject() {
   let i;
-  const n = circles.length;
+  const n = graph.nodes.length;
   let dx;
   let dy;
   let d2;
-  const radius = 10;
-  let s2 = radius * radius * 4; // Double the radius
-  let circle;
+  let s2 = radius * radius * 4;
+  let node;
   let subject;
 
   for (i = 0; i < n; i += 1) {
-    circle = circles[i];
-    console.log('circle from dragSubject', circle);
-    dx = d3.event.x - circle.x - rects[0].x;
-    dy = d3.event.y - circle.y - rects[0].y;
+    node = graph.nodes[i];
+    console.log('node from dragSubject', node);
+    dx = d3.event.x - node.x - rects[0].x;
+    dy = d3.event.y - node.y - rects[0].y;
     d2 = dx * dx + dy * dy;
 
     console.log('dx', dx);
@@ -138,7 +138,7 @@ function dragSubject() {
     console.log('s2', s2);
 
     if (d2 < s2) {
-      subject = circle;
+      subject = node;
       s2 = d2;
     } else if (typeof subject === 'undefined') {
       rect = rects[0];
