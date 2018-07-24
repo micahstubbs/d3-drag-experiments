@@ -4,15 +4,15 @@ d3.select('body')
   .attr('width', 960)
   .attr('height', 500);
 
-const canvas = d3.select('canvas');
-const context = canvas.node().getContext('2d');
-const width = canvas.property('width');
-const height = canvas.property('height');
+const canvas = d3.select('canvas')
+const context = canvas.node().getContext('2d')
+const width = canvas.property('width')
+const height = canvas.property('height')
 
 // make a rect for the background
 // d3.drag updates these values behind the scenes
-const rects = [{ x: 0, y: 0, x2: 0, y2: 0 }];
-const radius = 10;
+const background = { x: 0, y: 0, x2: 0, y2: 0 }
+const radius = 10
 
 //
 // setup force simulation
@@ -34,25 +34,25 @@ const graph = {
     { source: 3, target: 0 },
     { source: 4, target: 1 }
   ]
-};
+}
 
 const simulation = d3
   .forceSimulation()
   .force('link', d3.forceLink().id(d => d.id))
   .force('charge', d3.forceManyBody())
-  .force('center', d3.forceCenter(width / 2, height / 2));
+  .force('center', d3.forceCenter(width / 2, height / 2))
 
-simulation.nodes(graph.nodes).on('tick', ticked);
+simulation.nodes(graph.nodes).on('tick', ticked)
 
 function ticked() {
-  render();
+  render()
 }
 
 //
 //
 //
 
-render();
+render()
 
 canvas.call(
   d3
@@ -62,91 +62,91 @@ canvas.call(
     .on('drag', dragged)
     .on('end', dragEnded)
     .on('start.render drag.render end.render', render)
-);
+)
 
 function render() {
-  context.clearRect(0, 0, width, height);
-  // draw the black rectangle
-  rects.forEach(rect => {
-    
-    context.clearRect(0, 0, width, height);
-    
-    // context.fillStyle = 'black';
-    // context.fillRect(rect.x, rect.y, rect.x2, rect.y2);
+  context.clearRect(0, 0, width, height)
 
-    // draw a line for each link
-    context.strokeStyle = '#aaa';
-    context.lineWidth = 1;
-    context.beginPath();
-    graph.links.forEach(link => {
-      context.moveTo(
-        graph.nodes[link.source].x + rect.x,
-        graph.nodes[link.source].y + rect.y
-      );
-      context.lineTo(
-        graph.nodes[link.target].x + rect.x,
-        graph.nodes[link.target].y + rect.y
-      );
-    });
-    context.stroke();
+  context.clearRect(0, 0, width, height)
+
+  // draw a line for each link
+  context.strokeStyle = '#aaa'
+  context.lineWidth = 1
+  context.beginPath()
+  graph.links.forEach(link => {
+    context.moveTo(
+      graph.nodes[link.source].x + background.x,
+      graph.nodes[link.source].y + background.y
+    )
+    context.lineTo(
+      graph.nodes[link.target].x + background.x,
+      graph.nodes[link.target].y + background.y
+    )
+
+    context.stroke()
 
     // draw a circle for each node
-    context.beginPath();
+    context.beginPath()
     graph.nodes.forEach(node => {
-      context.moveTo(node.x + rect.x + radius, node.y + rect.y);
-      context.arc(node.x + rect.x, node.y + rect.y, radius, 0, 2 * Math.PI);
-    });
-    context.fillStyle = 'red';
-    context.fill();
-  });
+      context.moveTo(node.x + background.x + radius, node.y + background.y)
+      context.arc(
+        node.x + background.x,
+        node.y + background.y,
+        radius,
+        0,
+        2 * Math.PI
+      )
+    })
+    context.fillStyle = 'red'
+    context.fill()
+  })
 }
 
 function dragSubject() {
-  let i;
-  const n = graph.nodes.length;
-  let dx;
-  let dy;
-  let d2;
-  let s2 = radius * radius * 4;
-  let node;
-  let subject;
+  let i
+  const n = graph.nodes.length
+  let dx
+  let dy
+  let d2
+  let s2 = radius * radius * 4
+  let node
+  let subject
 
   for (i = 0; i < n; i += 1) {
-    node = graph.nodes[i];
-    console.log('node from dragSubject', node);
-    dx = d3.event.x - node.x - rects[0].x;
-    dy = d3.event.y - node.y - rects[0].y;
-    d2 = dx * dx + dy * dy;
+    node = graph.nodes[i]
+    console.log('node from dragSubject', node)
+    dx = d3.event.x - node.x - background.x
+    dy = d3.event.y - node.y - background.y
+    d2 = dx * dx + dy * dy
 
-    console.log('dx', dx);
-    console.log('dy', dy);
-    console.log('d2', d2);
-    console.log('s2', s2);
+    console.log('dx', dx)
+    console.log('dy', dy)
+    console.log('d2', d2)
+    console.log('s2', s2)
 
     if (d2 < s2) {
-      subject = node;
-      s2 = d2;
+      subject = node
+      s2 = d2
     } else if (typeof subject === 'undefined') {
-      background = rects[0];
-      subject = background;
-      console.log('background', background);
+      subject = background
+      console.log('background', background)
     }
   }
-  return subject;
+  return subject
 }
 
 function dragStarted() {
   // if (!d3.event.active) simulation.alphaTarget(0.3).restart();
   // circles.splice(circles.indexOf(d3.event.subject), 1);
   // circles.push(d3.event.subject);
-  d3.event.subject.active = true;
+  d3.event.subject.active = true
 }
 
 function dragged() {
-  d3.event.subject.x = d3.event.x;
-  d3.event.subject.y = d3.event.y;
+  d3.event.subject.x = d3.event.x
+  d3.event.subject.y = d3.event.y
 }
 
 function dragEnded() {
-  d3.event.subject.active = false;
+  d3.event.subject.active = false
 }
